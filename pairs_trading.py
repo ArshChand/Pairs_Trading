@@ -98,3 +98,36 @@ coint_result_g3 = coint(g3stock1_close, g3stock2_close)
 print(coint_result_g3[1])
 
 # Based on the above results we reject group 1 and 3 and proceed only with group 2
+
+# %% 
+# Perform Linear Regression
+
+# Log-transform the close prices
+log_stock1 = np.log(g2stock1_close)
+log_stock2 = np.log(g2stock2_close)
+
+# Linear regression: log(stock2) ~ log(stock1)
+X = sm.add_constant(log_stock1)
+Y = log_stock2
+
+model = sm.OLS(Y, X)
+results = model.fit()
+
+# Extract regression parameters
+intercept, beta = results.params
+print(f"Intercept: {intercept:.4f}, Beta (Hedge Ratio): {beta:.4f}")
+
+# Calculate spread (residuals)
+predicted_Y = results.predict(X)
+residuals = Y - predicted_Y
+
+plt.figure(figsize=(14, 5))
+plt.plot(residuals, color='navy', label='Residuals')
+plt.axhline(residuals.mean(), color='black', linestyle='--', label='Mean')
+plt.title(f'Spread (Residuals) from log-price regression\nSpread = log({grp2_stock2}) - {beta:.2f} × log({grp2_stock1})')
+plt.xlabel("Date")
+plt.ylabel("Spread (Residuals)")
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.show()
