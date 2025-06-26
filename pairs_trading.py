@@ -9,7 +9,6 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 import statsmodels.api as sm
-from statsmodels.tsa.stattools import adfuller
 import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings("ignore")
@@ -83,3 +82,19 @@ plt.xlabel("Time")
 plt.ylabel("Rel Close Price")
 plt.legend()
 plt.show()
+
+# %%
+# Examine p values
+
+from statsmodels.tsa.stattools import coint, adfuller
+
+coint_result_g1 = coint(g1stock1_close, g1stock2_close)
+print(coint_result_g1[1])
+
+coint_result_g2 = coint(g2stock1_close, g2stock2_close)
+print(coint_result_g2[1])
+
+coint_result_g3 = coint(g3stock1_close, g3stock2_close)
+print(coint_result_g3[1])
+
+# Based on the above results we reject group 1 and 3 and proceed only with group 2
