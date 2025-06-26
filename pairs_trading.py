@@ -131,3 +131,21 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+# %%
+# Z-score of spread residuals
+
+zscore = (residuals - residuals.mean()) / residuals.std()
+
+plt.figure(figsize=(14, 5))
+plt.plot(zscore, color='purple', label='Z-score of Spread')
+plt.axhline(1, color='red', linestyle='--', label='+1 Threshold')
+plt.axhline(-1, color='green', linestyle='--', label='-1 Threshold')
+plt.axhline(0, color='black', linestyle='--')
+plt.title("Z-score of Residuals")
+plt.xlabel("Date")
+plt.ylabel("Z-score")
+plt.grid(True)
+plt.legend()
+plt.tight_layout() 
+plt.show()
